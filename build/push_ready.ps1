@@ -11,7 +11,8 @@ param(
     [string]$Repo = "shuili-ganzhi",
     [string]$Branch = "main",
     [string]$Tag = "v1.76",
-    [string]$Token = $env:GITHUB_TOKEN
+    [string]$Token = $env:GITHUB_TOKEN,
+    [int]$PushTimeout = 120
 )
 $PROJECT_ROOT = Split-Path -Parent $PSScriptRoot   # build\ -> 工程根
 
@@ -32,18 +33,22 @@ if ($LASTEXITCODE -ne 0) { Write-Host "!! tag $Tag 不存在（先 git tag $Tag�
 $bad = git -C $PROJECT_ROOT ls-files | Select-String -Pattern '(^|/)(ai_seed\.js|secure_boot_cred\.js|sec_crypt\.js)$|\.keystore$|\.jks$|keystore\.properties$|\.github_token$'
 if ($bad) { Write-Host "!! 检出敏感件在库，禁止推送："; $bad; exit 1 }
 
-# ---- 推送（一次性 URL；此段临时降 EAP：git 进度走 stderr，PS5.1 下 2>&1 + Stop 会误炸）----
-# 低速中止：网络不可达/挂起时 30 秒失败退出（防永久卡死）；真实网络较慢可按需调大
+# ---- 推送（一次性 URL；Job 兜底超时：connect 挂起/认证等待/低速传输一律可中止）----
 $env:GIT_HTTP_LOW_SPEED_LIMIT = "1000"
 $env:GIT_HTTP_LOW_SPEED_TIME  = "30"
 $url = "https://$Token@github.com/$Owner/$Repo.git"
-$ErrorActionPreference = "Continue"
-git -C $PROJECT_ROOT push $url "${Branch}:main" --tags 2>&1 |
-    ForEach-Object { ("$_" -replace [regex]::Escape($Token), '***') }
-$code = $LASTEXITCODE
-$ErrorActionPreference = "Stop"
+$job = Start-Job -ScriptBlock {
+    param($root, $u, $br)
+    git -C $root push $u "${br}:main" --tags 2>&1
+    "EXITCODE=$LASTEXITCODE"
+} -ArgumentList $PROJECT_ROOT, $url, $Branch
+if (Wait-Job $job -Timeout $PushTimeout) { $out = @(Receive-Job $job) }
+else { Stop-Job $job; $out = @("TIMEOUT=推送 ${PushTimeout}s 无响应已中止（网络不可达/代理未配）") }
+Remove-Job $job -Force
+$out | ForEach-Object { Write-Host ("$_" -replace [regex]::Escape($Token), '***') }
+$code = if ("$out" -match "EXITCODE=(\d+)") { [int]$Matches[1] } else { 1 }
 
-if ($code -ne 0) { Write-Host "!! push 失败（exit=$code），核对 token 权限（repo 范围）与仓库名"; exit 1 }
+if ($code -ne 0) { Write-Host "!! push 失败（exit=$code），核对 token 权限（repo 范围）、仓库名与网络连通性"; exit 1 }
 
 Write-Host "推送完成：$Branch -> github.com/$Owner/$Repo（含 tag $Tag）"
 Write-Host "提示：token 未写入任何文件/配置；如需固化 remote：git remote add origin https://github.com/$Owner/$Repo.git（不带 token）"
