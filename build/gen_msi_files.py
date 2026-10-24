@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(HERE)
 PUBLISH_DIR = os.path.join(PROJECT_ROOT, "releases", "win")
 
-EXCLUDE_EXT = (".wxs", ".rtf", ".bat", ".pdb", ".xml")
+EXCLUDE_EXT = (".wxs", ".rtf", ".bat", ".pdb", ".xml", ".msi")
 EXCLUDE_NAMES = {"license.rtf", "build_msi.wxs", "files.wxs", "app.ico"}
 
 
