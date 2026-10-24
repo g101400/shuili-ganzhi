@@ -1,0 +1,81 @@
+# ===== 水利感知项目一张图 工程级忽略规则（独立仓库，不再依赖 gujian4060 单体 .gitignore）=====
+
+# 本地密钥 / 真实配置（绝不上传）
+secrets/
+*.local.js
+*.keystore
+*.jks
+
+# 构建产物 / 包（绝不上传）
+node_modules/
+dist/
+build/tmp/
+build/output/
+*.apk
+*.aab
+*.exe
+*.msi
+*.deb
+*.zip
+*.pdb
+*.dll
+bin/
+obj/
+publish/
+publish_v331/
+
+# 工作区 / 凭据
+.workbuddy/
+.github_token
+
+# 离线瓦片与清单（体积大，可再生成；运行需要但用本地缓存）
+offline_tiles/
+native-shell/*/webroot/offline_tiles/
+
+# 真实密钥文件：只保留 *.demo.js 模板
+ai_seed.js
+native-shell/*/webroot/ai_seed.js
+webroot/ai_seed.js
+
+# 历史备份目录（含旧 API 密钥副本，严禁入库）
+*_bak_*/
+*.bak
+*.bak_*
+__pycache__/
+*.pyc
+
+# iOS 历史发布包（体积大，不入库；保留构建脚本）
+native-shell/water-ios/apple-package/
+native-shell/water-ios/本地部署/
+secure_boot_cred.js
+native-shell/*/webroot/secure_boot_cred.js
+sec_crypt.js
+native-shell/*/sec_crypt.js
+# 2026-10-23：同 secure_boot_cred.js，内含与之一致的 AES-GCM 加盐凭证参数，
+# 已随独立仓推上 public 仓（native-shell/water-ios/sec_crypt.js），性质敏感件。
+webroot/secure_boot_cred.js
+# 2026-10-23（第 59 轮）：该文件是访问口令 AES-GCM 加盐凭证（199B，含 salt+密文），
+# 曾被 git add -A 带入并推上 public 仓 → 匿名可下载。性质敏感件一律不进版本库。
+
+# ===== 2026-10-24 本机（E:\dev\ganzhi\perc）新增：构建生成物一律不入库 =====
+# 四端发版产物目录（产物走 releases 发布流程，不入版本库；仅保留 README 文档）
+releases/
+!releases/README_交付说明.md
+
+# Windows 壳内 webroot 为构建时从工程 webroot 镜像生成（勿入库防漂移）
+native-shell/win-webview2/webroot/
+native-shell/win-webview2/bin/
+native-shell/win-webview2/obj/
+
+# Android Gradle 构建缓存与产物（assets/www 由 build_all.ps1 同步再生）
+build/targets/android/.gradle/
+build/targets/android/app/build/
+build/targets/android/app/src/main/assets/www/
+build/targets/android/local.properties
+build/targets/android/.idea/
+
+# msi 组装中间目录（files.wxs/wixobj 等构建期临时件）
+releases/_msi/
+
+# Python 缓存
+*.egg-info/
