@@ -73,6 +73,8 @@ build/targets/android/.gradle/
 build/targets/android/app/build/
 build/targets/android/app/src/main/assets/www/
 build/targets/android/local.properties
+# APK 发布签名口令文件（敏感件，正式件在仓库外 tools\keystore\，此处防贡献者本地误放）
+build/targets/android/keystore.properties
 build/targets/android/.idea/
 
 # msi 组装中间目录（files.wxs/wixobj 等构建期临时件）

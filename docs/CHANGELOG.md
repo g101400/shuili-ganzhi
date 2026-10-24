@@ -2,6 +2,15 @@
 
 当前版本：**1.76**（code 76）　buildDate：**2026-10-24**（本机构建环境落地）
 
+## 2026-10-24 · 发布签名与发版基建（同日第二批）
+
+- APK 发布签名落地：keystore 生成于仓库外 `tools\keystore\`（RSA2048/30年/alias=shuili），口令文件同址——密钥零入库；`build.gradle` 签名段归位（清除 yijitun/GUJIAN_* 残留，支持 `SHUILI_KEYSTORE_PROPS` 环境变量或工程根 keystore.properties 定位，缺失自动降级 debug 签名保证公开库可构建）。
+- `build_all.ps1` Android 段 assembleDebug→assembleRelease（产物 8.43MB），apksigner 实测 **v2 签名 verified**，证书 `CN=Shuili Ganzhi Release`。
+- 发布清单基建：`build/gen_release_manifest.py` 生成 `docs/RELEASE_MANIFEST.md`（7 产物 SHA256+大小+APK 证书指纹+门禁实况），哈希随批次变化、对账以最近构建为准。
+- 一键发版推送：`build/push_ready.ps1`（token 仅进程内存、一次性 URL 不入 .git/config、输出过滤回显；推送前三道预检：工作区干净/tag 存在/敏感件零入库复扫）。
+- `build_apk.sh` 归位：清除古建/GujianApp/4060/旧机路径残留，路径锚定脚本位置、源指向 webroot、默认 assembleRelease。
+- 发布标签：git tag `v1.76`；`.gitignore` 补 `build/targets/android/keystore.properties` 镜像位排除。
+
 ## 2026-10-24 · 四端构建环境落地（新机 E 盘独立工程，重要）
 
 - 依据 `perc_handoff.zip` 在 `E:\dev\ganzhi\perc` 落地独立工程；webroot 基线 33 文件 0 漂移。

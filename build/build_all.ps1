@@ -74,17 +74,21 @@ if ($t.all -or $Only -eq "uos") {
 
 # ---------- 3) Android APK ----------
 if ($t.all -or $Only -eq "android") {
-    Step "Android APK（gradle assembleDebug）" {
+    Step "Android APK（gradle assembleRelease）" {
         $assets = "$PROJECT_ROOT\build\targets\android\app\src\main\assets\www"
         if (Test-Path $assets) { Remove-Item $assets -Recurse -Force }
         New-Item -ItemType Directory -Force -Path $assets | Out-Null
         Copy-Item "$PROJECT_ROOT\webroot\*" $assets -Recurse
+        # 发布签名（密钥零入库）：keystore.properties 在仓库外 tools\keystore\，存在则注入；
+        # 不存在时 build.gradle 自动降级 debug 签名（仍为 release APK）
+        $ksPropsPath = "$TOOLS\keystore\keystore.properties"
+        if (Test-Path $ksPropsPath) { $env:SHUILI_KEYSTORE_PROPS = $ksPropsPath }
         Push-Location "$PROJECT_ROOT\build\targets\android"
         try {
-            & $GRADLE --no-daemon -p . clean assembleDebug | Select-Object -Last 3
+            & $GRADLE --no-daemon -p . clean assembleRelease | Select-Object -Last 3
             if ($LASTEXITCODE -ne 0) { throw "gradle 失败" }
         } finally { Pop-Location }
-        $apk = Get-ChildItem "$PROJECT_ROOT\build\targets\android\app\build\outputs\apk\debug" -Filter *.apk | Select-Object -First 1
+        $apk = Get-ChildItem "$PROJECT_ROOT\build\targets\android\app\build\outputs\apk\release" -Filter *.apk | Select-Object -First 1
         New-Item -ItemType Directory -Force -Path "$RELEASES\android" | Out-Null
         Copy-Item $apk.FullName "$RELEASES\android\水利感知项目一张图_V1.76.apk" -Force
         Write-Host ("  APK -> {0} ({1:N2} MB)" -f "$RELEASES\android\水利感知项目一张图_V1.76.apk", ($apk.Length/1MB))

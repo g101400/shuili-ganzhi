@@ -4,16 +4,26 @@ android {
     namespace 'com.shuili.ganzhi'
     compileSdk 34
 
-    // 发布签名：仅当本地 keystore 存在时启用（口令从环境变量读取，不入库）
-    // 本地未提供 keystore 时自动降级为 debug 签名，便于贡献者也能构建
+    // 发布签名（密钥零入库）：keystore 与口令文件一律在仓库外（如 tools\keystore\），
+    // 定位顺序：环境变量 SHUILI_KEYSTORE_PROPS 指向的 properties → 工程根 keystore.properties（本地件）。
+    // 两者都不存在时自动降级 debug 签名（仍为 release APK），保证公开库贡献者可直接构建。
+    def ksPropsFile = null
+    def envProps = System.getenv('SHUILI_KEYSTORE_PROPS')
+    if (envProps != null && file(envProps).exists()) {
+        ksPropsFile = file(envProps)
+    } else if (file('keystore.properties').exists()) {
+        ksPropsFile = file('keystore.properties')
+    }
+
     signingConfigs {
-        def ksFile = file('../../keystore/release.keystore')
-        if (ksFile.exists()) {
+        if (ksPropsFile != null) {
+            def ks = new Properties()
+            ksPropsFile.withInputStream { ks.load(it) }
             release {
-                storeFile ksFile
-                storePassword project.hasProperty('GUJIAN_STORE_PW') ? GUJIAN_STORE_PW : System.getenv('GUJIAN_STORE_PW')
-                keyAlias 'yijitun'
-                keyPassword project.hasProperty('GUJIAN_KEY_PW') ? GUJIAN_KEY_PW : System.getenv('GUJIAN_KEY_PW')
+                storeFile file(ks['storeFile'])
+                storePassword ks['storePassword']
+                keyAlias ks['keyAlias']
+                keyPassword ks['keyPassword']
             }
         }
     }
