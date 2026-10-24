@@ -2,6 +2,13 @@
 
 当前版本：**1.76**（code 76）　buildDate：**2026-10-24**（本机构建环境落地）
 
+## 2026-10-24 · 发版最后一公里配套（同日第三批）
+
+- `docs/RELEASE_NOTES_v1.76.md`：GitHub Release 正文（要点/产物表/四端安装/已知事项，与 RELEASE_MANIFEST 呼应）。
+- `build/upload_baidupan.ps1`：百度网盘一键上传（bypy 幂等装至 `tools\pylibs` 零 C 盘；仅传 7 项清单产物，缺失即中止防半包；云端 list 对账）。首次运行需粘贴授权码。
+- `build/serve_https.py`：iOS PWA 自签名 HTTPS 一键托管（Git openssl 证书落 `tools\certs` 不入库；`/_dev_cert.crt` 路由供 iPhone 下载描述文件；附真机信任步骤）。冒烟中修复真缺陷：服务目录未锚定（-d 不生效致 404），改 `functools.partial(directory=)` 显式锚定。
+- bypy 1.8.9 预装就绪；至此本机侧发版准备全部闭环，仅余外部凭据动作（GitHub token / 网盘授权码）。
+
 ## 2026-10-24 · 发布签名与发版基建（同日第二批）
 
 - APK 发布签名落地：keystore 生成于仓库外 `tools\keystore\`（RSA2048/30年/alias=shuili），口令文件同址——密钥零入库；`build.gradle` 签名段归位（清除 yijitun/GUJIAN_* 残留，支持 `SHUILI_KEYSTORE_PROPS` 环境变量或工程根 keystore.properties 定位，缺失自动降级 debug 签名保证公开库可构建）。
