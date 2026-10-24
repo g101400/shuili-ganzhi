@@ -24,7 +24,7 @@ Copy-Item "$proj\native-shell\win-webview2\build_msi.wxs" $msiDir
 Copy-Item "$proj\native-shell\win-webview2\app.ico" $msiDir
 
 # 2) license.rtf（GBK 编码 RTF，含中文许可声明；wxs 的 WixUILicenseRtf 引用）
-$rtf = "{\rtf1\ansi\ansicpg936\deff0{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}\fs18\par 水利感知项目一张图 V1.76\par\par \'c8\'ed\'bc\'fe\'d0\'ed\'bf\'c9\'c9\'f9\'c3\'f7\par\par \'b1\'be\'c8\'ed\'bc\'fe\'b9\'e9\'cb\'f9\'d3\'d0\'d5\'df\'cb\'f9\'d3\'d0\'a1\'a3\'b0\'b2\'d7\'b0\'ba\'f3\'bd\'f6\'cf\'de\'b1\'be\'c8\'ed\'bc\'fe\'c4\'da\'b2\'bf\'ca\'b9\'d3\'c3\'a1\'a3\par}"
+$rtf = "{\rtf1\ansi\ansicpg936\deff0{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}\fs18\par 水利感知项目一张图 V1.77\par\par \'c8\'ed\'bc\'fe\'d0\'ed\'bf\'c9\'c9\'f9\'c3\'f7\par\par \'b1\'be\'c8\'ed\'bc\'fe\'b9\'e9\'cb\'f9\'d3\'d0\'d5\'df\'cb\'f9\'d3\'d0\'a1\'a3\'b0\'b2\'d7\'b0\'ba\'f3\'bd\'f6\'cf\'de\'b1\'be\'c8\'ed\'bc\'fe\'c4\'da\'b2\'bf\'ca\'b9\'d3\'c3\'a1\'a3\par}"
 [IO.File]::WriteAllText("$msiDir\license.rtf", $rtf, [Text.Encoding]::GetEncoding(936))
 
 # 3) files.wxs（纯ASCII Id + $(var.SourceDir) 预处理变量）

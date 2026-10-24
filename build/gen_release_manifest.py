@@ -7,7 +7,7 @@ import hashlib, os, subprocess, sys, datetime
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RELEASES = os.path.join(PROJECT_ROOT, "releases")
 DOCS = os.path.join(PROJECT_ROOT, "docs")
-VERSION = "1.76"
+VERSION = "1.77"
 
 PRODUCTS = [
     ("Win exe",            os.path.join(RELEASES, "win", "水利感知项目一张图.exe")),

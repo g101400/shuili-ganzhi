@@ -20,7 +20,7 @@ WEBROOT = os.path.join(PROJECT_ROOT, "webroot")
 RELEASE_DIR = os.path.join(PROJECT_ROOT, "releases", "ios")
 ICON_SRC = os.path.join(PROJECT_ROOT, "build", "targets", "android", "app", "src", "main", "res")
 
-VERSION = "1.76"
+VERSION = "1.77"
 
 EXCLUDE_FILES = {"ai_seed.js", "secure_boot_cred.js", "sec_crypt.js"}
 EXCLUDE_DIRS = {"offline_tiles", "__pycache__", ".git"}
@@ -44,7 +44,7 @@ MANIFEST = {
 }
 
 SW_JS = """// 水利感知项目一张图 · PWA Service Worker（iOS Safari 添加到主屏幕后离线可开）
-var CACHE = 'ganzhi-v1.76';
+var CACHE = 'ganzhi-v1.77';
 var CORE = [
   './', './index.html', './app.js', './data.js', './water_data.js',
   './ctx_menu.js', './photo_gesture.js', './jszip.min.js', './version.json',
@@ -100,7 +100,7 @@ README = """# 水利感知项目一张图 · iOS 部署说明（PWA 可托管包
 - 其余                  与工程 webroot 完全一致（33 文件，含 leaflet/ ocr/ data.js 等）
 
 ## 版本
-- 版本 1.76（version.json 同源）；数据 1125 条监测记录；四大子系统。
+- 版本 1.77（version.json 同源）；数据 667 条监测记录；四大子系统。
 
 ## 安全说明
 - 本包不含 ai_seed.js / secure_boot_cred.js / offline_tiles（密钥与大数据不入包铁律）。

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 # 编译 水利感知项目一张图 Android APK（WebApp 外壳，内嵌 webroot）
 # 用法（Git Bash）：
 #   bash build_apk.sh                    # 有签名配置则发布签名，否则 debug 签名（均可安装）
@@ -33,7 +33,7 @@ echo "[2/3] 编译 APK（gradle assembleRelease）..."
 
 echo "[3/3] 取出 APK..."
 APK=$(find "$PROJECT/app/build/outputs/apk/release" -name '*.apk' | head -1)
-VER=$(python -c "import json,io;print(json.load(io.open('$SOURCE/version.json',encoding='utf-8'))['version'])" 2>/dev/null || echo "1.76")
+VER=$(python -c "import json,io;print(json.load(io.open('$SOURCE/version.json',encoding='utf-8'))['version'])" 2>/dev/null || echo "1.77")
 mkdir -p "$RELEASE_DIR"
 cp "$APK" "$RELEASE_DIR/水利感知项目一张图_V${VER}.apk"
 echo "完成 -> $RELEASE_DIR/水利感知项目一张图_V${VER}.apk"

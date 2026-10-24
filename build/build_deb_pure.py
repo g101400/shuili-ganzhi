@@ -21,7 +21,7 @@ WEBROOT = os.path.join(PROJECT_ROOT, "webroot")
 RELEASE_DIR = os.path.join(PROJECT_ROOT, "releases", "uos")
 
 PKG = "shuili-ganzhi"
-VERSION = "1.76"
+VERSION = "1.77"
 ARCH = sys.argv[1] if len(sys.argv) > 1 else "amd64"
 APP_DIR = "/opt/" + PKG
 MAINTAINER = "小七 <xiaoyi@example.com>"

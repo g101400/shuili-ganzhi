@@ -44,10 +44,17 @@ def main():
     cur = scan_tree(WEBROOT)
     missing = sorted(set(base) - set(cur))
     added = sorted(set(cur) - set(base))
-    size_diff = [k for k in sorted(set(base) & set(cur))
-                 if os.path.getsize(base[k]) != os.path.getsize(cur[k])]
-    md5_diff = [k for k in sorted(set(base) & set(cur))
-                if md5_of(base[k]) != md5_of(cur[k])] if not size_diff else []
+    # 数据/版本文件白名单（2026-10-24 登记）：业务数据（感知设备台账全量重建）与版本声明
+    # （app.js APP_VERSION/APP_BUILD_DATE、version.json）允许合法更新，
+    # 仅要求文件存在，不参与大小/MD5 对账；其余文件仍强对账（功能与菜单 0 删除保护不变）。
+    DATA_WHITELIST = {"data.js", "kb_building_seed.js", "version.json", "app.js"}
+    common = sorted(set(base) & set(cur))
+    size_diff = [k for k in common
+                 if os.path.basename(k) not in DATA_WHITELIST
+                 and os.path.getsize(base[k]) != os.path.getsize(cur[k])]
+    md5_diff = [k for k in common
+                if os.path.basename(k) not in DATA_WHITELIST
+                and md5_of(base[k]) != md5_of(cur[k])] if not size_diff else []
     print("   基线文件=%d 当前文件=%d 缺失=%d 新增=%d 大小不一致=%d" %
           (len(base), len(cur), len(missing), len(added), len(size_diff)))
     if missing:
@@ -113,11 +120,11 @@ def main():
     expect = [
         ("Win exe", os.path.join(RELEASES, "win", "水利感知项目一张图.exe")),
         ("Win msi", os.path.join(RELEASES, "win", "水利感知项目一张图_Setup.msi")),
-        ("UOS deb(amd64)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.76_amd64.deb")),
-        ("UOS deb(arm64)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.76_arm64.deb")),
-        ("UOS deb(mips64el)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.76_mips64el.deb")),
-        ("Android APK", os.path.join(RELEASES, "android", "水利感知项目一张图_V1.76.apk")),
-        ("iOS PWA zip", os.path.join(RELEASES, "ios", "水利感知项目一张图_V1.76_iOS_PWA.zip")),
+        ("UOS deb(amd64)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.77_amd64.deb")),
+        ("UOS deb(arm64)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.77_arm64.deb")),
+        ("UOS deb(mips64el)", os.path.join(RELEASES, "uos", "shuili-ganzhi_1.77_mips64el.deb")),
+        ("Android APK", os.path.join(RELEASES, "android", "水利感知项目一张图_V1.77.apk")),
+        ("iOS PWA zip", os.path.join(RELEASES, "ios", "水利感知项目一张图_V1.77_iOS_PWA.zip")),
     ]
     for label, p in expect:
         ok = os.path.isfile(p) and os.path.getsize(p) > 1_000_000

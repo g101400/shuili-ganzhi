@@ -90,8 +90,8 @@ if ($t.all -or $Only -eq "android") {
         } finally { Pop-Location }
         $apk = Get-ChildItem "$PROJECT_ROOT\build\targets\android\app\build\outputs\apk\release" -Filter *.apk | Select-Object -First 1
         New-Item -ItemType Directory -Force -Path "$RELEASES\android" | Out-Null
-        Copy-Item $apk.FullName "$RELEASES\android\水利感知项目一张图_V1.76.apk" -Force
-        Write-Host ("  APK -> {0} ({1:N2} MB)" -f "$RELEASES\android\水利感知项目一张图_V1.76.apk", ($apk.Length/1MB))
+        Copy-Item $apk.FullName "$RELEASES\android\水利感知项目一张图_V1.77.apk" -Force
+        Write-Host ("  APK -> {0} ({1:N2} MB)" -f "$RELEASES\android\水利感知项目一张图_V1.77.apk", ($apk.Length/1MB))
     }
 }
 

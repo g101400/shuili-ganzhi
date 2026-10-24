@@ -1,7 +1,7 @@
 ﻿# 水利感知项目一张图 · 一键发版推送（token 零痕迹）
 # 用法：
 #   $env:GITHUB_TOKEN = "ghp_xxx"   （或 -Token 参数传入；用后建议从会话移除）
-#   powershell -File build\push_ready.ps1 -Owner <github用户名> [-Repo shuili-ganzhi] [-Tag v1.76]
+#   powershell -File build\push_ready.ps1 -Owner <github用户名> [-Repo shuili-ganzhi] [-Tag v1.77]
 # 安全设计（密钥零入库延伸）：
 #   1) token 仅存在于本次进程内存：用一次性 URL 推送，不写入 .git/config，不落任何文件；
 #   2) 输出统一过滤 token 后再显示（防 git fatal 消息回显 URL 中的 token）；
@@ -10,7 +10,7 @@ param(
     [Parameter(Mandatory=$true)][string]$Owner,
     [string]$Repo = "shuili-ganzhi",
     [string]$Branch = "main",
-    [string]$Tag = "v1.76",
+    [string]$Tag = "v1.77",
     [string]$Token = $env:GITHUB_TOKEN,
     [int]$PushTimeout = 120
 )

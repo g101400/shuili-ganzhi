@@ -82,3 +82,6 @@ releases/_msi/
 
 # Python 缓存
 *.egg-info/
+
+# 本轮会话临时探查输出
+build/.temp/

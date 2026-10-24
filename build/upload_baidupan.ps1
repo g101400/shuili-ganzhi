@@ -22,7 +22,7 @@ if (-not (Test-Path "$PYLIBS\bypy")) {
 function Bypy { python -m bypy @args; if ($LASTEXITCODE -ne 0) { throw "bypy $args 失败" } }
 
 # ---- 2) 产物清单（与 gate_check/RELEASE_MANIFEST 一致，7 项）----
-$V = "1.76"
+$V = "1.77"
 $items = @(
     @{ local = "win\水利感知项目一张图.exe";                     remote = "win/" },
     @{ local = "win\水利感知项目一张图_Setup.msi";               remote = "win/" },

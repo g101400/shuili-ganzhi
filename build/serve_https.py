@@ -81,7 +81,7 @@ def main():
     a = ap.parse_args()
 
     if not os.path.isdir(a.d):
-        print("!! 目录不存在:", a.d, "\n   先解压 releases/ios/水利感知项目一张图_V1.76_iOS_PWA.zip 到该目录（或用 -d 指定）")
+        print("!! 目录不存在:", a.d, "\n   先解压 releases/ios/水利感知项目一张图_V1.77_iOS_PWA.zip 到该目录（或用 -d 指定）")
         sys.exit(1)
 
     ip = lan_ip()
