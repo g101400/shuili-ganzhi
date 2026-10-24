@@ -2,6 +2,14 @@
 
 当前版本：**1.76**（code 76）　buildDate：**2026-10-24**（本机构建环境落地）
 
+## 2026-10-24 · GitHub 发版完成（v1.76 上线）
+
+- 发现目标仓 `g101400/shuili-ganzhi`（public）旧历史含敏感件 `webroot/secure_boot_cred.js`（CHANGELOG 2026-10-23 复盘同源事故痕迹）→ 经用户确认执行**删仓重建**（旧 commit 彻底消失，零残留），push 本地权威历史。
+- 推送 `main`（10 commits）+ tag `v1.76`（token 一次性 URL、零落盘、输出过滤）。
+- GitHub Release `v1.76` 建成（正文 RELEASE_NOTES_v1.76.md）：https://github.com/g101400/shuili-ganzhi/releases/tag/v1.76
+- 附件 7/7 上传并字节数对账通过；踩坑记录：**curl.exe 命令行传 Unicode asset 名丢中文**（产出 default.exe 等坏名）→ 删坏件改用 Invoke-RestMethod + ASCII 安全名重传；PS5.1 `-Body` 中文字符串须转 UTF-8 字节 + `charset=utf-8`。
+- 远端树敏感件终扫零命中；本次会话所用 PAT 建议立即撤销轮换。
+
 ## 2026-10-24 · 交付自验与离线灾备（同日第四批）
 
 - `build/verify_release.py`：接收方验包脚本——解析 RELEASE_MANIFEST 的 7 产物表逐项重算 SHA256 对账（大小+哈希双校验，FAIL 提示刷新清单），实测 **7/7 PASS**。
