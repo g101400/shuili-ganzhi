@@ -1,9 +1,9 @@
 # 水利感知项目一张图 · 工程说明
 
-- 包名：`com.shuili.ganzhi`　版本：`1.76`（code 76）　数据量：1125 条监测记录（recordCount），视频监控 / 雨水情监测 / 大坝安全监测 / 地下水源监测
+- 包名：`com.shuili.ganzhi`　版本：`1.77`（code 77）　数据量：667 条监测记录（recordCount；2026-10-24 感知设备基础数据全量更换），视频监控 / 雨水情监测 / 大坝安全监测 / 地下水源监测
 - 独立 Git 仓库：`shuili-ganzhi`（main 分支）
 - 百度网盘子目录：`水利感知`
-- 工程根：`D:/Users/WorkBuddy/perc/`
+- 工程根：`E:\dev\ganzhi\perc`（原交接机 D:/Users/WorkBuddy/perc/）
 
 ## 这是什么
 
@@ -48,3 +48,5 @@ python -m http.server 8080
 - 支持从奥维互动地图（OvitalMap）采集对象经 ovobj_bridge.js 桥接导入；mdb_reader.js 读取 Access(.mdb)。
 
 > 隔离规范与经验教训见 `AGENT_HANDOFF.md` 第 5/8 节。本工程是三独立工程（shuili / gujian / perc）之一，只负责本工程。
+
+> AI生成

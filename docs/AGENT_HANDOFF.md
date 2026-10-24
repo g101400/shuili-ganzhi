@@ -7,9 +7,9 @@
 
 ## 0. 接手范围（必读）
 
-- 你接手的是 **水利感知项目一张图** 的独立工程，目录 **`D:/Users/WorkBuddy/perc/`**。
+- 你接手的是 **水利感知项目一张图** 的独立工程，目录 **`D:/Users/WorkBuddy/perc/`**（2026-10-24 起新机工程根为 **`E:\dev\ganzhi\perc`**，构建环境见 `docs/BUILD.md`）。
 - 你是**唯一负责本项目**的智能体：**不要触碰** `D:/Users/WorkBuddy/shuili/`、`D:/Users/WorkBuddy/gujian/` 中**非本项目**的目录与 Git 仓库。
-- 包名 `com.shuili.ganzhi`，版本 `1.76`（code 76），数据量 1125 条监测记录（recordCount），视频监控 / 雨水情监测 / 大坝安全监测 / 地下水源监测 四大子系统。
+- 包名 `com.shuili.ganzhi`，版本 `1.77`（code 77，2026-10-24 感知设备基础数据全量更换），数据量 667 条监测记录（recordCount；源 F:\ganzhi\dev 五台账），视频监控 / 雨水情监测 / 大坝安全监测 / 地下水源监测 四大子系统。
 
 ## 1. 应用是什么
 
@@ -36,13 +36,13 @@
   python -m http.server 8080
   # 浏览器打开 http://localhost:8080/index.html
   ```
-- 数据来源：data.js 内嵌 1125 条监测记录；water_data.js 内嵌四大子系统监测数据；mdb_reader.js 读取 Access(.mdb)；ovobj_bridge.js 桥接奥维对象；可经「设置 → 数据导入/导出」增量更新。offline_tiles/ 为离线地图瓦片（体积大、可再生成，不入库）。
+- 数据来源：data.js 内嵌 667 条监测记录（v1.77 起由 build/gen_perception_data.py 从 F:\ganzhi\dev 五台账重建）；water_data.js 内嵌四大子系统监测数据；mdb_reader.js 读取 Access(.mdb)；ovobj_bridge.js 桥接奥维对象；可经「设置 → 数据导入/导出」增量更新。offline_tiles/ 为离线地图瓦片（体积大、可再生成，不入库）。
 
 ## 3. 源码文件地图（webroot/）
 
 - `index.html` —— 入口页，加载 `app.js` 与各模块。
 - `app.js` —— **主逻辑（最大文件，切勿整段替换）**：地图渲染、菜单系统、交互、数据绑定。改动须走增量 diff。
-- `data.js` / `data.demo.js` —— 内嵌 1125 条监测记录；**真实 `data.js` 已入库**，仅 `data.demo.js` 作模板/脱敏样例。
+- `data.js` / `data.demo.js` —— 内嵌 667 条监测记录；**真实 `data.js` 已入库**，仅 `data.demo.js` 作模板/脱敏样例。
 - `water_data.js` / `water_data.demo.js` —— 四大子系统监测数据；**真实 `water_data.js` 已入库**，仅 demo 模板另存。
 - `ai_module.js` —— AI 助手子模块（默认隐藏，可一键切换显示）。
 - `kb_core.js` / `kb_rag.js` / `kb_source.js` / `kb_vector.js` / `kb_building_seed.js` —— 本地知识库（核心 / 检索 / 来源 / 向量 / 建筑种子），均已入库。
@@ -140,3 +140,5 @@ perc_handoff.zip
 4. [ ] 逐项点菜单，确认功能与菜单 **0 删除、0 报错**。
 5. [ ] 改代码只动本工程 `webroot/`；提交前 `git status` 确认无 `ai_seed.js` / `secure_boot_cred.js` / `offline_tiles/` 泄露。
 6. [ ] 发版走 GitHub `shuili-ganzhi` 独立仓 + 百度网盘 `水利感知` 独立目录，不碰另两工程。
+
+> AI生成

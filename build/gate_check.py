@@ -8,7 +8,7 @@
 4. 产物实存对账：四端产物机器验证真实存在（日志成功 ≠ 产物实存）
 断言计数必须 >0 并打印（防假绿）。
 """
-import os, sys, json, zipfile, tarfile, io, hashlib
+import os, sys, json, zipfile, tarfile, io, hashlib, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(HERE)
@@ -131,6 +131,23 @@ def main():
         sz = os.path.getsize(p) / 1e6 if os.path.isfile(p) else 0
         print("   %-16s %s (%.2f MB)" % (label, "实存" if ok else "缺失!", sz))
         checks.append(("产物:" + label, ok))
+
+    print("== 5) releases 禁旧版本产物（跨版本夹带防护，2026-10-24 v1.77 踩坑后新增）==")
+    # 起因：deb/apk/zip 产物名带版本号，版本 bump 后旧版产物残留 releases/ 同发——违反
+    # 「出包前清旧包杜绝夹带」铁律的跨版本形态。当前版本以 version.json 为单一事实源。
+    cur_ver = json.load(open(os.path.join(PROJECT_ROOT, "version.json"), encoding="utf-8"))["version"]
+    stale = []
+    for r, dirs, fns in os.walk(RELEASES):
+        dirs[:] = [d for d in dirs if d not in ("_site", "_msi")]   # 解压/组装工作目录不算产物
+        for fn in fns:
+            if fn.endswith((".exe", ".msi", ".deb", ".apk", ".zip")):
+                m = re.search(r"(?:V|shuili-ganzhi_)(\d+\.\d+)", fn)
+                if m and m.group(1) != cur_ver:
+                    stale.append(os.path.relpath(os.path.join(r, fn), RELEASES))
+    print("   当前版本=%s 旧版产物命中=%d（须=0）" % (cur_ver, len(stale)))
+    if stale:
+        print("   旧版产物清单:", stale)
+    checks.append(("旧版产物零夹带", len(stale) == 0))
 
     print("== 门禁汇总 ==")
     ok = sum(1 for _n, v in checks if v)
