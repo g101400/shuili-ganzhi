@@ -17,6 +17,24 @@
   - 回归门禁：`python build\gate_check.py`（基线对账 / 密钥零入包 / 7 项产物实存，11 项断言）
 - 新脚本全部以脚本位置推导 `PROJECT_ROOT`（无硬编码绝对路径），天然满足「路径锚定工程根」铁律。
 
+## Git 独立仓库（2026-10-24 落地）
+
+- 本地仓库已初始化（`main` 分支，首次提交 4f5047b，109 文件），隔离红线第 2 条落地。
+- 提交方式：靶向 `git add .gitignore version.json webroot docs native-shell build`（**禁 add -A**），提交前 porcelain 核查密钥/备份 0 泄露。
+- `.gitignore` 已补：`releases/`（产物不入库，仅留 README）、`native-shell/win-webview2/webroot/`（生成镜像）、Android gradle 缓存/`app/build/`/`assets/www/`（同步再生）、`local.properties`、`releases/_msi/`。
+- remote `shuili-ganzhi` 待接入：本机未提供 GitHub token，需要发版时补 `git remote add origin <url>` 后 `git push -u origin main`（凭据走安全流程，勿入库）。
+
+## 门禁反向验证（防假绿铁律实证，2026-10-24）
+
+隔离副本注入 4 类假漂移，门禁全部 exit=1 拦截，恢复后复跑 11/11 PASS：
+
+| 注入反例 | 预期拦截点 | 实测 |
+|---|---|---|
+| webroot\data.js 追加 1 字节 | 基线大小一致=0漂移 | exit=1 ✓ |
+| webroot 混入 app.js.bak_test | webroot 无 .bak_* | exit=1 ✓ |
+| releases\ios\ 混入 ai_seed.js | 密钥零泄露 | exit=1 ✓ |
+| 删除 Android APK 产物 | 产物实存对账 | exit=1 ✓ |
+
 ## 原生壳
 
 - win-webview2：Windows WebView2（Edge 内核）原生壳，窗口标题「水利感知项目一张图」
