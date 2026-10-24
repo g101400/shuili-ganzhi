@@ -2,6 +2,14 @@
 
 当前版本：**1.76**（code 76）　buildDate：**2026-10-24**（本机构建环境落地）
 
+## 2026-10-24 · 交付自验与离线灾备（同日第四批）
+
+- `build/verify_release.py`：接收方验包脚本——解析 RELEASE_MANIFEST 的 7 产物表逐项重算 SHA256 对账（大小+哈希双校验，FAIL 提示刷新清单），实测 **7/7 PASS**。
+- git bundle 离线灾备：`E:\dev\ganzhi\backup\shuili-ganzhi_v1.76.bundle`（7.98MB，--all 含 tag），bundle verify 完整历史 + **还原演练通过**（clone 得 6 提交/tag v1.76/HEAD 一致）——远程仓就绪前的唯一副本风险已缓解。
+- iOS `_site` 解压就绪（39 文件，index/manifest/sw.js 齐），`serve_https.py` 可直接起服。
+- RELEASE_MANIFEST 刷新对齐第 6 次提交后门禁实况（产物未重建，哈希不变）。
+- 待办移交：GitHub push（token）/ 百度网盘（授权码）为仅余的外部凭据动作。
+
 ## 2026-10-24 · 发版最后一公里配套（同日第三批）
 
 - `docs/RELEASE_NOTES_v1.76.md`：GitHub Release 正文（要点/产物表/四端安装/已知事项，与 RELEASE_MANIFEST 呼应）。
