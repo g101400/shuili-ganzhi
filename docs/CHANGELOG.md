@@ -2,6 +2,13 @@
 
 当前版本：**1.77**（code 77）　buildDate：**2026-10-24**（感知设备基础数据全量更换）
 
+## 2026-10-24 · 工程净化（gujian 残留死脚本清理）
+
+- `build/` 清出 12 个 gujian（古建打卡，另一项目）/旧单体仓交接残留死脚本（build_all_v24.sh、build_all_guijian.sh、build_guijian.sh、sync_guijian.py、sync_targets.py、push.py、upload_release.sh、finalize_debs.sh、build_deb.py、build_deb_mips.py、bump_v247.py、docs_v247.py）——删除前逐一验证：均含 gujian/旧机（D:/Users/WorkBuddy/aowei_win10）硬路径、功能已被本工程活脚本取代、活脚本零代码引用（build_deb_pure.py 仅注释提及"继承自"）；push.py 引用 `.github_token` 文件（弃用的 token 落盘模式），删除消除潜在泄露路径。
+- 保留 3 个本项目专项工具：make_public_data.py（公开版脱敏器）/ verify_myml_ar.py（deb ar 头铁律校验）/ gen_feature_matrix.py（四端功能对照单）。
+- `build/` 终态 15 脚本全为本工程活链；BUILD.md「通用构建脚本」段全量重写（构建链/发版交付/专项工具三组）+ 关键规则第 1 条补「兄弟工程残留脚本一律清出」。
+- 顺带核验：native-shell/win-webview2/webroot 镜像已 v1.77（667 条），与 releases 产物同源。
+
 ## 2026-10-24 · v1.77 发版后收尾（夹带清理+门禁加固+文档同步）
 
 - **旧版产物夹带清理**：releases/ 残留 5 件 v1.76 旧包（apk/zip/deb×3，版本 bump 后不同名未触发出包清理）——已全数删除，releases 终态 7 产物全 v1.77。

@@ -76,20 +76,30 @@
 ### iOS（PWA 可托管包）
 - 本工程**无独立 iOS 壳**，如确需可复用 shuili 工程的 `native-shell/water-ios/build_ios_zip.py` 思路生成可托管 zip（非 App Store .ipa）。
 
-## 通用构建脚本（build/）
+## 通用构建脚本（build/，2026-10-24 净化后全量清单）
 
-- `build_all_v24.sh` / `build_all_guijian.sh` —— 一键构建入口（**内部绝对路径须重指为本工程根**）。
-- `build_deb.py` / `build_deb_mips.py` —— deb 打包；`finalize_debs.sh` —— deb 收尾。
-- `bump_v*.py` —— 版本号自增；`docs_v*.py` —— 文档生成。
-- `publish_release.py` / `upload_release.sh` —— 发布/上传。
-- `push.py` / `sync_*.py` / `sync_targets.py` —— 同步到各端；`targets/` —— Android Gradle 工程。
-- `make_public_data.py` / `gen_feature_matrix.py` / `verify_myml_ar.py` —— 数据脱敏 / 特性矩阵 / 校验。
+**构建链（活脚本）**：
+- `build_all.ps1` —— 权威一键入口（Web 冒烟→Win→deb×3→Android→iOS→门禁）
+- `build_msi.ps1` + `gen_msi_files.py` —— msi 方案与组件清单生成
+- `build_deb_pure.py` —— 纯 Python deb 打包（三架构）
+- `build_ios_pwa.py` —— iOS PWA zip；`build/targets/android/build_apk.sh` —— APK
+- `gate_check.py` —— 回归门禁（12 断言）
+
+**发版与交付（活脚本）**：
+- `push_ready.ps1` —— GitHub 推送（token 零痕迹）；`gen_release_manifest.py` / `verify_release.py` —— 清单生成 / 验包
+- `upload_baidupan.ps1` —— 百度网盘上传；`serve_https.py` —— iOS HTTPS 自签名托管
+- `gen_perception_data.py` —— 感知设备数据重建（F:\ganzhi\dev 台账 → data.js 等）
+
+**专项工具（保留）**：
+- `make_public_data.py` —— 公开版数据脱敏器；`verify_myml_ar.py` —— deb ar 头铁律校验；`gen_feature_matrix.py` —— 四端功能对照单生成。
+
+> 2026-10-24 已清理 12 个 gujian（古建打卡，另一项目）/旧单体仓交接残留死脚本（build_all_v24.sh、build_all_guijian.sh、build_guijian.sh、sync_guijian.py、sync_targets.py、push.py【引用 .github_token 文件，弃用的 token 落盘模式】、upload_release.sh、finalize_debs.sh、build_deb.py、build_deb_mips.py、bump_v247.py、docs_v247.py）——功能均已被上列活脚本取代；如需考古走 git 历史。
 
 ## 关键规则（防互相影响 / 防假绿）
 
-1. 每个工程只构建自己的 `webroot/`，绝不引用兄弟工程目录。
+1. 每个工程只构建自己的 `webroot/`，绝不引用兄弟工程目录；**兄弟工程的残留脚本一律清出 build/**。
 2. 构建脚本路径用 `PROJECT_ROOT` 锚定，禁止 CWD 相对路径。
-3. 出包前清同版本旧包，避免 `_bak_*` / `webroot_bak_*` 夹带污染（曾把安装包撑大 50 倍）。
+3. 出包前清同版本旧包（含跨版本残留，门禁第 12 断言拦截），避免 `_bak_*` / `webroot_bak_*` 夹带污染。
 4. 门禁断言计数必须 >0 且等于登记下限，零覆盖「全部通过」是假绿。
 
 > AI生成
