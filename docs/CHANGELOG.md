@@ -8,6 +8,7 @@
 - git bundle 离线灾备：`E:\dev\ganzhi\backup\shuili-ganzhi_v1.76.bundle`（7.98MB，--all 含 tag），bundle verify 完整历史 + **还原演练通过**（clone 得 6 提交/tag v1.76/HEAD 一致）——远程仓就绪前的唯一副本风险已缓解。
 - iOS `_site` 解压就绪（39 文件，index/manifest/sw.js 齐），`serve_https.py` 可直接起服。
 - RELEASE_MANIFEST 刷新对齐第 6 次提交后门禁实况（产物未重建，哈希不变）。
+- `push_ready.ps1` 补低速中止（GIT_HTTP_LOW_SPEED_LIMIT/TIME=30s）：假 token 演练中暴露网络不可达时 push 永久挂起缺陷，已修；预检链实测两轮拦截生效（无 token/工作区不干净均 exit=1）。
 - 待办移交：GitHub push（token）/ 百度网盘（授权码）为仅余的外部凭据动作。
 
 ## 2026-10-24 · 发版最后一公里配套（同日第三批）

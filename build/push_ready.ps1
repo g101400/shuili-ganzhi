@@ -33,6 +33,9 @@ $bad = git -C $PROJECT_ROOT ls-files | Select-String -Pattern '(^|/)(ai_seed\.js
 if ($bad) { Write-Host "!! 检出敏感件在库，禁止推送："; $bad; exit 1 }
 
 # ---- 推送（一次性 URL；此段临时降 EAP：git 进度走 stderr，PS5.1 下 2>&1 + Stop 会误炸）----
+# 低速中止：网络不可达/挂起时 30 秒失败退出（防永久卡死）；真实网络较慢可按需调大
+$env:GIT_HTTP_LOW_SPEED_LIMIT = "1000"
+$env:GIT_HTTP_LOW_SPEED_TIME  = "30"
 $url = "https://$Token@github.com/$Owner/$Repo.git"
 $ErrorActionPreference = "Continue"
 git -C $PROJECT_ROOT push $url "${Branch}:main" --tags 2>&1 |
